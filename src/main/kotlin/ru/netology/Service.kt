@@ -63,18 +63,16 @@ object Service {
         return getChat(userId)
             .filter { it.latestUnreadMessageIndex != null }
             .count {
-            (it.message[it.latestUnreadMessageIndex!!].authorId != userId)
-        }
+                (it.message[it.latestUnreadMessageIndex!!].authorId != userId)
+            }
     }
 
-    fun getNewMessagesByChat(userId: Int, chatId: Int): List<Message> {
+    fun getNewMessagesByChat(userId: Int, chatId: Int, quantity: Int = 20): List<Message> {
         deletedChats.firstOrNull { it == chatId }// c if (deletedChats.contains(chatId)) читабельнее
             ?.let {
                 println("Нет сообщений")
                 return listOf<Message>()
-            } ?:
-
-        if (chatList[chatId].latestUnreadMessageIndex == null) {
+            } ?: if (chatList[chatId].latestUnreadMessageIndex == null) {
             println("Нет новых сообщений")
             return listOf<Message>()
         }
@@ -83,6 +81,7 @@ object Service {
                     && !deletedMessages.contains(it.messageId)
                     && it.authorId != userId
         }
+            .take(quantity)
 
         chatList[chatId].latestUnreadMessageIndex =
             chatList[chatId].latestUnreadMessageIndex?.plus(listOfNewMessages.size)

@@ -150,8 +150,26 @@ class ServiceTest {
         Service.deleteMessage(101,3,12)
         val expectedCountOfNewMessagesFor202InChat0Upd1 = 1
         assertEquals(expectedCountOfNewMessagesFor202InChat0Upd1, Service.getNewMessagesByChat(202, 3).size)
+    }
 
-
+    @Test
+    fun getQuantityOfNewMessagesByChat() {
+        val msg0 = Service.send(101, 202, "0")
+        val msg1 = Service.send(202, 101, "1")
+        val msg2 = Service.send(202, 101, "2")
+        val msg3 = Service.send(202, 101, "3")
+        val msg4 = Service.send(202, 101, "4")
+        val msg5 = Service.send(202, 101, "5")
+        val msg6 = Service.send(202, 101, "6")
+        val msg7 = Service.send(202, 101, "7")
+        val msg8 = Service.send(202, 101, "8")
+        val msg9 = Service.send(202, 101, "9")
+        val expectedCountOfNewMessage = 7
+        val actualCountOfNewMessage = Service.getNewMessagesByChat(101, 0, 7).size
+        assertEquals(expectedCountOfNewMessage, actualCountOfNewMessage)
+        val expectedCountOfNewMessage1 = 2
+        val actualCountOfNewMessage1 = Service.getNewMessagesByChat(101, 0, 7).size
+        assertEquals(expectedCountOfNewMessage1, actualCountOfNewMessage1)
     }
 
     @Test
